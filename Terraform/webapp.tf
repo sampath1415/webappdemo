@@ -15,6 +15,10 @@ features {}
 resource "azurerm_resource_group" "dev" {
   name     = "PULTerraform"
   location = "West Europe"
+  tags = {
+    environment = "dev"
+  }
+
 }
 
 resource "azurerm_app_service_plan" "dev" {
