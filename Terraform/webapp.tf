@@ -14,7 +14,7 @@ features {}
 }
 resource "azurerm_resource_group" "dev" {
   name     = "PULTerraform"
-  location = "West Europe"
+  location = "Central US"
   tags = {
     environment = "dev"
     createdby="poorani"
