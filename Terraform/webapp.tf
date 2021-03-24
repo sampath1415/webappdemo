@@ -17,6 +17,8 @@ resource "azurerm_resource_group" "dev" {
   location = "West Europe"
   tags = {
     environment = "dev"
+    createdby="poorani"
+    modeofdeployment= "azurecicd"
   }
 
 }
