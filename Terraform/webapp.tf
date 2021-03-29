@@ -13,7 +13,7 @@
 features {}
 }
 resource "azurerm_resource_group" "dev" {
-  name     = "PULTerraform"
+  name     = "PULTerraform2190"
   location = "Central US"
   tags = {
     environment = "dev"
