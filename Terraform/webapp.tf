@@ -13,8 +13,8 @@
 features {}
 }
 resource "azurerm_resource_group" "dev" {
-  name     = "PULTerraform"
-  location = "East US"
+  name     = "appdbwebtest"
+  location = "Central US"
   tags = {
     environment = "dev"
     createdby="poorani"
