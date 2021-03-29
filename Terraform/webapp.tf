@@ -12,21 +12,23 @@
     version = "=2.0.0"
 features {}
 }
-resource "azurerm_resource_group" "dev" {
-  name     = "appdbwebtest123"
-  location = "Central US"
-  tags = {
-    environment = "dev"
-    createdby="poorani"
-    modeofdeployment= "azurecicd"
-  }
+//resource "azurerm_resource_group" "dev" {
+ // name     = "appdbwebtest"
+  //location = "Central US"
+  //tags = {
+   // environment = "dev"
+   // createdby="poorani"
+    //modeofdeployment= "azurecicd"
+  //}*/
 
-}
+//}
 
 resource "azurerm_app_service_plan" "dev" {
   name                = "__appserviceplan__"
-  location            = "${azurerm_resource_group.dev.location}"
-  resource_group_name = "${azurerm_resource_group.dev.name}"
+  location            = "Central US"
+	//"${azurerm_resource_group.dev.location}"
+  resource_group_name = "appdbwebtest"
+	//"${azurerm_resource_group.dev.name}"
 
   sku {
     tier = "Free"
@@ -36,8 +38,8 @@ resource "azurerm_app_service_plan" "dev" {
 
 resource "azurerm_app_service" "dev" {
   name                = "__appservicename__"
-  location            = "${azurerm_resource_group.dev.location}"
-  resource_group_name = "${azurerm_resource_group.dev.name}"
+  location            = "Central US"
+  resource_group_name = "appdbwebtest"
   app_service_plan_id = "${azurerm_app_service_plan.dev.id}"
 
 }
