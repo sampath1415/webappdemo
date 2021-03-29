@@ -13,7 +13,7 @@
 features {}
 }
 resource "azurerm_resource_group" "dev" {
-  name     = "appdbwebtest"
+  name     = "appdbwebtest123"
   location = "Central US"
   tags = {
     environment = "dev"
