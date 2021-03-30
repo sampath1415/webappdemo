@@ -139,6 +139,11 @@ resource "azurerm_monitor_autoscale_setting" "asplan1" {
       custom_emails                         = ["poorani.kamalakannan@allianzlife.com"]
     }
   }
-  depends_on = [azurerm_app_service_plan.dev]
+    depends_on = [azurerm_app_service_plan.dev]
+    tags = {
+    environment = "dev"
+    createdby="poorani"
+    modeofdeployment= "azurecicd"
+  }
 }
 
