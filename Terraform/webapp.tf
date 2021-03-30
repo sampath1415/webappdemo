@@ -41,5 +41,83 @@ resource "azurerm_app_service" "dev" {
   location            = "Central US"
   resource_group_name = "appdbwebtest"
   app_service_plan_id = "${azurerm_app_service_plan.dev.id}"
+  depends_on = [azurerm_app_service_plan.dev , azurerm_monitor_autoscale_setting.asplan1]
+	  
 
 }
+
+resource "azurerm_application_insights" "example" {
+  name                = "tf-test-appinsights"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  application_type    = "web"
+}
+
+
+resource "azurerm_monitor_autoscale_setting" "asplan1" {
+  name                ="${local.sub-environment_shortname}-${local.projectname}-${local.asp_service_shortname}-asp-autoscale"
+  resource_group_name = azurerm_app_service_plan.dev.resource_group_name
+  location            =  azurerm_app_service_plan.dev.location
+  target_resource_id  = azurerm_app_service_plan.dev.id
+
+  profile {
+    name = "default"
+
+    capacity {
+      default = 1
+      minimum = 1
+      maximum = 2
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_app_service_plan.dev.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "GreaterThan"
+        //threshold          = var.cpuUpperThreshold
+	      threshold          = 80
+      }
+
+      scale_action {
+        direction = "Increase"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT15M"
+      }
+    }
+
+    rule {
+      metric_trigger {
+        metric_name        = "CpuPercentage"
+        metric_resource_id = azurerm_app_service_plan.dev.id
+        time_grain         = "PT1M"
+        statistic          = "Average"
+        time_window        = "PT5M"
+        time_aggregation   = "Average"
+        operator           = "LessThan"
+        threshold          = 30
+      }
+
+      scale_action {
+        direction = "Decrease"
+        type      = "ChangeCount"
+        value     = "1"
+        cooldown  = "PT15M"
+      }
+    }
+  }
+
+  notification {
+    email {
+      send_to_subscription_administrator    = true
+      send_to_subscription_co_administrator = true
+      custom_emails                         = var.customemail_asp_autoscale
+    }
+  }
+  depends_on = [asp]
+}
+
