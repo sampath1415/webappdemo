@@ -47,6 +47,11 @@ resource "azurerm_application_insights" "example" {
   location            = azurerm_app_service_plan.dev.location
   resource_group_name = azurerm_app_service_plan.dev.resource_group_name
   application_type    = "web"
+	tags = {
+    environment = "dev"
+    createdby="poorani"
+    modeofdeployment= "azurecicd"
+  }
 }
 
 resource "azurerm_app_service" "dev" {
@@ -105,7 +110,11 @@ resource "azurerm_monitor_autoscale_setting" "asplan1" {
         cooldown  = "PT15M"
       }
     }
-
+ tags = {
+    environment = "dev"
+    createdby="poorani"
+    modeofdeployment= "azurecicd"
+  }
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
