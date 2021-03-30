@@ -34,6 +34,12 @@ resource "azurerm_app_service_plan" "dev" {
     tier = "Basic"
     size = "B1"
   }
+    tags = {
+    environment = "dev"
+    createdby="poorani"
+    modeofdeployment= "azurecicd"
+  }
+
 }
 
 resource "azurerm_application_insights" "example" {
@@ -52,7 +58,13 @@ resource "azurerm_app_service" "dev" {
 app_settings = {
     "APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.example.instrumentation_key}"
   }
-	   
+	 
+    tags = {
+    environment = "dev"
+    createdby="poorani"
+    modeofdeployment= "azurecicd"
+  }
+
 
 }
 
