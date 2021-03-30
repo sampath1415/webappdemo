@@ -119,7 +119,7 @@ resource "azurerm_monitor_autoscale_setting" "asplan1" {
     email {
       send_to_subscription_administrator    = false
       send_to_subscription_co_administrator = false
-      custom_emails                         = "poorani.kamalakannan@allianzlife.com;sampath.palanisamy@allianzlife.com"
+      custom_emails                         = ["poorani.kamalakannan@allianzlife.com"]
     }
   }
   depends_on = [azurerm_app_service_plan.dev]
