@@ -110,11 +110,7 @@ resource "azurerm_monitor_autoscale_setting" "asplan1" {
         cooldown  = "PT15M"
       }
     }
- tags = {
-    environment = "dev"
-    createdby="poorani"
-    modeofdeployment= "azurecicd"
-  }
+
     rule {
       metric_trigger {
         metric_name        = "CpuPercentage"
