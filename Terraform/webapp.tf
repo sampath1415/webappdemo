@@ -52,6 +52,8 @@ resource "azurerm_app_service" "dev" {
 app_settings = {
     "APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.example.instrumentation_key}"
   }
+	 auth_settings = {
+     enabled             = true
 	  
 
 }
