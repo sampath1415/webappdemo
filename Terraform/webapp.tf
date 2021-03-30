@@ -36,26 +36,30 @@ resource "azurerm_app_service_plan" "dev" {
   }
 }
 
+resource "azurerm_application_insights" "example" {
+  name                = "__appinsights__"
+  location            = azurerm_app_service_plan.dev.location
+  resource_group_name = azurerm_app_service_plan.dev.resource_group_name
+  application_type    = "web"
+}
+
 resource "azurerm_app_service" "dev" {
   name                = "__appservicename__"
   location            = "Central US"
   resource_group_name = "appdbwebtest"
   app_service_plan_id = "${azurerm_app_service_plan.dev.id}"
   depends_on = [azurerm_app_service_plan.dev , azurerm_monitor_autoscale_setting.asplan1]
+app_settings = {
+    "APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.example.instrumentation_key}"
+  }
 	  
 
 }
 
-resource "azurerm_application_insights" "example" {
-  name                = "tf-test-appinsights"
-  location            = azurerm_resource_group.example.location
-  resource_group_name = azurerm_resource_group.example.name
-  application_type    = "web"
-}
 
 
 resource "azurerm_monitor_autoscale_setting" "asplan1" {
-  name                ="${local.sub-environment_shortname}-${local.projectname}-${local.asp_service_shortname}-asp-autoscale"
+  name                ="__azuremonitor__"
   resource_group_name = azurerm_app_service_plan.dev.resource_group_name
   location            =  azurerm_app_service_plan.dev.location
   target_resource_id  = azurerm_app_service_plan.dev.id
@@ -113,11 +117,11 @@ resource "azurerm_monitor_autoscale_setting" "asplan1" {
 
   notification {
     email {
-      send_to_subscription_administrator    = true
-      send_to_subscription_co_administrator = true
-      custom_emails                         = var.customemail_asp_autoscale
+      send_to_subscription_administrator    = false
+      send_to_subscription_co_administrator = false
+      custom_emails                         = "poorani.kamalakannan@allianzlife.com;sampath.palanisamy@allianzlife.com"
     }
   }
-  depends_on = [asp]
+  depends_on = [azurerm_app_service_plan.dev]
 }
 
