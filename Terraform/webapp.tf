@@ -53,7 +53,8 @@ app_settings = {
     "APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.example.instrumentation_key}"
   }
 	 auth_settings = {
-     enabled             = true
+        enabled      = true
+		 }
 	  
 
 }
