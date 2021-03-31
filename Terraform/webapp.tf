@@ -45,11 +45,7 @@ resource "azurerm_subnet" "integrationsubnet" {
       name = "Microsoft.Web/serverFarms"
     }
   }
-   tags = {
-   environment = "dev"
-   createdby="poorani"
-   modeofdeployment= "azurecicd"
-  }
+ 
 }
 
 resource "azurerm_network_security_group" "example" {
