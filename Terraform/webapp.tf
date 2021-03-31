@@ -56,8 +56,8 @@ resource "azurerm_application_insights" "example" {
 
 resource "azurerm_app_service" "dev" {
   name                = "__appservicename__"
-  location            = "Central US"
-  resource_group_name = "appdbwebtest"
+  location            = azurerm_app_service_plan.dev.location
+  resource_group_name =  azurerm_app_service_plan.dev.resource_group_name
   app_service_plan_id = "${azurerm_app_service_plan.dev.id}"
   depends_on = [azurerm_app_service_plan.dev , azurerm_monitor_autoscale_setting.asplan1]
 app_settings = {
