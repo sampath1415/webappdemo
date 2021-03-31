@@ -12,23 +12,23 @@
     version = "=2.0.0"
 features {}
 }
-//resource "azurerm_resource_group" "dev" {
- // name     = "appdbwebtest"
-  //location = "Central US"
-  //tags = {
-   // environment = "dev"
-   // createdby="poorani"
-    //modeofdeployment= "azurecicd"
-  //}*/
+resource "azurerm_resource_group" "dev" {
+  name     = "my-demo-resourcegroup"
+  location = "Central US"
+  tags = {
+   environment = "dev"
+   createdby="poorani"
+  modeofdeployment= "azurecicd"
+  }
 
-//}
+}
 
 resource "azurerm_app_service_plan" "dev" {
   name                = "__appserviceplan__"
-  location            = "Central US"
-	//"${azurerm_resource_group.dev.location}"
-  resource_group_name = "appdbwebtest"
-	//"${azurerm_resource_group.dev.name}"
+  //location            = "Central US" 
+  location="${azurerm_resource_group.dev.location}"
+  //resource_group_name = "appdbwebtest"
+resource_group_name="${azurerm_resource_group.dev.name}"
 
   sku {
     tier = "Basic"
