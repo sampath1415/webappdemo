@@ -13,7 +13,7 @@
 features {}
 }
 resource "azurerm_resource_group" "dev" {
-  name     = "my-demo-resourcegroup"
+  name     = "my-demo-rg"
   location = "Central US"
   tags = {
    environment = "dev"
