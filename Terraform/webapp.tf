@@ -84,8 +84,8 @@ resource "azurerm_app_service_plan" "dev" {
 resource_group_name="${azurerm_resource_group.dev.name}"
 
   sku {
-    tier = "Basic"
-    size = "B1"
+    tier = "Premiumv2"
+    size = "P1v2"
   }
     tags = {
     environment = "dev"
