@@ -20,7 +20,49 @@ resource "azurerm_resource_group" "dev" {
    createdby="poorani"
   modeofdeployment= "azurecicd"
   }
+}
 
+resource "azurerm_virtual_network" "vnet" {
+  name                = "myvnetdemo"
+  location            = azurerm_resource_group.dev.location
+  resource_group_name = azurerm_resource_group.dev.name
+  address_space       = ["10.0.0.0/16"]
+}
+
+resource "azurerm_subnet" "integrationsubnet" {
+  name                 = "integrationsubnet"
+  resource_group_name  = azurerm_resource_group.dev.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.0.1.0/24"]
+  delegation {
+    name = "delegation"
+    service_delegation {
+      name = "Microsoft.Web/serverFarms"
+    }
+  }
+}
+
+resource "azurerm_network_security_group" "example" {
+  name                = "example-nsg"
+  location            = azurerm_resource_group.dev.location
+  resource_group_name = azurerm_resource_group.dev.name
+
+  security_rule {
+    name                       = "test123"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_subnet_network_security_group_association" "example" {
+  subnet_id                 = azurerm_subnet.integrationsubnet.id
+  network_security_group_id = azurerm_network_security_group.example.id
 }
 
 resource "azurerm_app_service_plan" "dev" {
@@ -60,8 +102,10 @@ resource "azurerm_app_service" "dev" {
   resource_group_name =  azurerm_app_service_plan.dev.resource_group_name
   app_service_plan_id = "${azurerm_app_service_plan.dev.id}"
   depends_on = [azurerm_app_service_plan.dev , azurerm_monitor_autoscale_setting.asplan1]
-app_settings = {
-    "APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.example.instrumentation_key}"
+  app_settings = {
+    "APPINSIGHTS_INSTRUMENTATIONKEY" = "${azurerm_application_insights.example.instrumentation_key}",
+    "WEBSITE_DNS_SERVER": "168.63.129.16",
+    "WEBSITE_VNET_ROUTE_ALL": "1"
   }
 	 
     tags = {
@@ -70,7 +114,10 @@ app_settings = {
     modeofdeployment= "azurecicd"
   }
 
-
+}
+resource "azurerm_app_service_virtual_network_swift_connection" "vnetintegrationconnection" {
+  app_service_id  = azurerm_app_service.dev.id
+  subnet_id       = azurerm_subnet.integrationsubnet.id
 }
 
 
