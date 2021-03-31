@@ -26,7 +26,7 @@ resource "azurerm_virtual_network" "vnet" {
   name                = "myvnetdemo"
   location            = azurerm_resource_group.dev.location
   resource_group_name = azurerm_resource_group.dev.name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = var.vnet_address_prefix
    tags = {
    environment = "dev"
    createdby="poorani"
@@ -38,7 +38,7 @@ resource "azurerm_subnet" "integrationsubnet" {
   name                 = "integrationsubnet"
   resource_group_name  = azurerm_resource_group.dev.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefix     = ["10.0.1.0/24"]
+  address_prefix     = var.subnet_address_prefix
   delegation {
     name = "delegation"
     service_delegation {
