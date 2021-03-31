@@ -27,6 +27,11 @@ resource "azurerm_virtual_network" "vnet" {
   location            = azurerm_resource_group.dev.location
   resource_group_name = azurerm_resource_group.dev.name
   address_space       = ["10.0.0.0/16"]
+   tags = {
+   environment = "dev"
+   createdby="poorani"
+   modeofdeployment= "azurecicd"
+  }
 }
 
 resource "azurerm_subnet" "integrationsubnet" {
@@ -39,6 +44,11 @@ resource "azurerm_subnet" "integrationsubnet" {
     service_delegation {
       name = "Microsoft.Web/serverFarms"
     }
+  }
+   tags = {
+   environment = "dev"
+   createdby="poorani"
+   modeofdeployment= "azurecicd"
   }
 }
 
@@ -57,6 +67,11 @@ resource "azurerm_network_security_group" "example" {
     destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
+  }
+   tags = {
+   environment = "dev"
+   createdby="poorani"
+   modeofdeployment= "azurecicd"
   }
 }
 
